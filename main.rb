@@ -12,8 +12,6 @@ game = Game.new
 puts "Угадайте целое число от 1 до 16 за три попытки?"
 
 until game.over?
-  game.next_attempt
-
   puts "\nПопытка #{game.attempt}. Введите число:"
   user_input = gets.to_i
 

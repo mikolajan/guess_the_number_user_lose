@@ -1,4 +1,7 @@
 class Game
+  MIN_NUMBER = 1
+  MAX_NUMBER = 16
+
   attr_reader :attempt
 
   # Заданный диапазон чисел - это возможные варианты ответов,
@@ -7,24 +10,15 @@ class Game
     @min_number = 1
     @max_number = 16
 
-    @attempt = 0
-  end
-
-  def next_attempt
-    @attempt += 1
-  end
-
-  def guessed_number
-    (@max_number + @min_number) / 2
+    @attempt = 1
   end
 
   def result_of_attempt(number)
     change_range_of_hidden_numbers(number)
 
-    return if over?
+    next_attempt
 
     calculate_deviation(number)
-
     result = @deviation.abs < 3 ? 'Тепло, ' : 'Холодно, '
     result += 'нужно '
     result += @deviation < 0 ? 'меньше' : 'больше'
@@ -32,10 +26,10 @@ class Game
   end
 
   def result_of_game
-    if game.win?
-      "Ура!!! Вы отгадали правильный ответ! Количество попыток: #{game.attempt}."
+    if win?
+      "Ура!!! Вы отгадали правильный ответ! Количество попыток: #{attempt}."
     else
-      "Попытки закончились, вы не отгадали. Правильный ответ: #{game.guessed_number}"
+      "Попытки закончились, вы не отгадали. Правильный ответ: #{guessed_number}"
     end
   end
 
@@ -81,8 +75,16 @@ class Game
     end
   end
 
+  def guessed_number
+    (@max_number + @min_number) / 2
+  end
+
   def lose?
-    @attempt > 2
+    @attempt > 3
+  end
+
+  def next_attempt
+    @attempt += 1
   end
 
   def win?
